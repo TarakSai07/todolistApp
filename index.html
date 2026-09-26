@@ -47,9 +47,9 @@
             outline: none;
 
             font-size: 16px;
+
         }
-
-
+      
         button {
             padding: 10px 15px;
 
@@ -89,5 +89,253 @@
         <div id="taskList"></div>
 
     </div>
+
+
+
+    
+    <script>
+
+        // Get HTML elements
+        let input = document.getElementById("input");
+        let addBtn = document.getElementById("addBtn");
+        let taskList = document.getElementById("taskList");
+
+
+        // Store all tasks
+        let tasks = [];
+
+
+        // Get saved tasks from localStorage
+        let savedTasks = localStorage.getItem("tasks");
+
+
+        // If saved tasks exist
+        if (savedTasks != null) {
+
+            tasks = JSON.parse(savedTasks);
+
+            showTasks();
+        }
+
+
+        // Add button click
+        addBtn.addEventListener("click", function () {
+
+            let text = input.value;
+
+
+            // Check empty input
+            if (text.trim() === "") {
+
+                alert("No value entered");
+
+                return;
+            }
+
+
+            // Create a task object
+            let taskObject = {
+
+                id: Date.now(),
+
+                text: text
+
+            };
+
+
+            // Add task object to array
+            tasks.push(taskObject);
+
+
+            // Save tasks
+            localStorage.setItem(
+                "tasks",
+                JSON.stringify(tasks)
+            );
+
+
+            // Clear input
+            input.value = "";
+
+
+            // Display tasks
+            showTasks();
+
+        });
+
+
+        // Function to display all tasks
+        function showTasks() {
+
+            // Clear old HTML
+            taskList.innerHTML = "";
+
+
+            // Loop through tasks
+            for (let i = 0; i < tasks.length; i++) {
+
+                let task = tasks[i];
+
+                let id = task.id;
+                let text = task.text;
+
+
+                // Create todo div
+                let element = document.createElement("div");
+
+                element.classList.add("todo");
+
+
+                // Create task text
+                let taskText = document.createElement("span");
+
+                taskText.classList.add("task");
+
+                taskText.setAttribute(
+                    "contenteditable",
+                    "false"
+                );
+
+                taskText.innerText = text;
+
+
+                // Create Edit button
+                let editBtn = document.createElement("button");
+
+                editBtn.classList.add("edit");
+              
+                editBtn.innerText = "Edit";
+
+
+                // Create Delete button
+                let deleteBtn = document.createElement("span");
+
+                deleteBtn.classList.add("delete");
+
+                deleteBtn.innerText = "🗑️";
+
+
+                // Add elements inside todo
+                element.appendChild(taskText);
+
+                element.appendChild(editBtn);
+
+                element.appendChild(deleteBtn);
+
+
+                // Delete task
+                deleteBtn.addEventListener("click", function () {
+
+                    let newTasks = [];
+
+
+                    for (let i = 0; i < tasks.length; i++) {
+
+                        if (tasks[i].id !== id) {
+
+                            newTasks.push(tasks[i]);
+
+                        }
+
+                    }
+
+
+                    tasks = newTasks;
+
+
+                    // Save updated tasks
+                    localStorage.setItem(
+                        "tasks",
+                        JSON.stringify(tasks)
+                    );
+
+
+                    // Remove from page
+                    taskList.removeChild(element);
+
+                });
+
+
+                // Edit task
+                editBtn.addEventListener("click", function () {
+
+                    // If currently in Edit mode
+                    if (editBtn.innerText === "Edit") {
+
+                        // Allow editing
+                        taskText.setAttribute(
+                            "contenteditable",
+                            "true"
+                        );
+
+
+                        // Put cursor inside text
+                        taskText.focus();
+
+
+                        // Change button to Save
+                        editBtn.innerText = "Save";
+
+                    }
+
+
+                    // If currently in Save mode
+                    else {
+
+                        // Stop editing
+                        taskText.setAttribute(
+                            "contenteditable",
+                            "false"
+                        );
+
+
+                        // Get updated text
+                        let updatedText =
+                            taskText.innerText.trim();
+
+
+                        // Check that text is not empty
+                        if (updatedText !== "") {
+
+
+                            // Find the task and update it
+                            for (let i = 0; i < tasks.length; i++) {
+
+                                if (tasks[i].id === id) {
+
+                                    tasks[i].text = updatedText;
+
+                                }
+
+                            }
+
+
+                            // Save updated tasks
+                            localStorage.setItem(
+                                "tasks",
+                                JSON.stringify(tasks)
+                            );
+
+                        }
+
+
+                        // Change button back to Edit
+                        editBtn.innerText = "Edit";
+
+                    }
+
+                });
+
+
+                // Add complete todo to task list
+                taskList.appendChild(element);
+
+            }
+
+        }
+
+    </script>
+
+
 </body>
 </html>
