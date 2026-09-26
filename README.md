@@ -1,0 +1,1 @@
+# Todo App A simple and beginner-friendly **Todo App** built using **HTML, CSS, and JavaScript**. This project allows users to add, edit, and delete tasks. The tasks are stored in the browser's **Local Storage**, so they remain available even after refreshing the page.
