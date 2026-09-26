@@ -66,6 +66,54 @@
         button:hover {
             background: #ff4757;
         }
+        
+        .todo {
+            margin-top: 15px;
+            padding: 12px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+
+            transition: transform 0.2s;
+        }
+
+
+        .todo:hover {
+            transform: translateY(-3px);
+        }
+
+
+        .task {
+            flex: 1;
+            cursor: pointer;
+        }
+
+
+        .edit {
+            background: #1e90ff;
+        }
+
+
+        .edit:hover {
+            background: #187bcd;
+        }
+
+
+        .delete {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+
+        .delete:hover {
+            transform: scale(1.1);
+        }
+
+
       </style>
 </head>
 <body>
